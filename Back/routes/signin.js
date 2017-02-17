@@ -2,13 +2,10 @@ const express = require('express');
 const User = require('../models/users');
 const router = express.Router();
 
-function validatePassword(req, res, next){
-  if (req.body.pass1 !== req.body.pass2) return res.send({error:'Passwords dont match'});
-  next();
-}
+// VALIDACION DE DATOS //
 
 function validateUser(req, res, next) {
-  User.find({ username: req.body.user }).then(function(data){
+  User.find({ username: req.body.username }).then(data => {
     if (data.length !== 0) return res.send({error:'User taken'});
     next();
   }).catch(function(err) {
@@ -16,15 +13,26 @@ function validateUser(req, res, next) {
   });
 }
 
-function createUser(){
-  User.create(req.body).then((user) => {
+function validatePassword(req, res, next){
+  if (req.body.pass !== req.body.passConfirm) return res.send({error:'Passwords dont match'});
+  next();
+}
+// ------------------------------- //
+
+// CREACION DEL USUARIO //
+  
+function createUser(req, res, next){
+  User.create({
+    username: req.body.username,
+    password: req.body.pass,
+    name: req.body.name,
+  }).then((user) => {
     req.user = user
     next();
   })
 }
+// ------------------------------- //
 
-router.get('/', validateUser, validatePassword, createUser, function(req, res, next) {
-  res.send(req.user);
-});
+router.post('/', validateUser, validatePassword, createUser, (req, res) => res.send(req.user));
 
 module.exports = router;
