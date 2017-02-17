@@ -27,8 +27,5 @@ export const PostReducer: Reducer<PostState> = (state: PostState = postInitialSt
      return newPosts
     default:
       return state;
-
      }
-
-
   }

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { BackendService } from '../backend.service';
 
 @Component({
   selector: 'app-user-sign',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserSignComponent implements OnInit {
 
-  constructor() { }
+  constructor(@Inject(BackendService) private backend: BackendService) {
 
+  }
   ngOnInit() {
+  }
+  newUser(name, username, pass, passConfirm){
+    this.backend.userRegister(name, username, pass, passConfirm)
   }
 
 }

@@ -35,6 +35,31 @@ var BackendService = (function () {
             .map(function (item) { return _this.results.push(new Post(item)); }); });
         this.store.dispatch(AppActions.getPosts(this.results));
     };
+    BackendService.prototype.userRegister = function (name, username, pass, passConfirm) {
+        var _this = this;
+        var userData = {
+            name: name,
+            username: username,
+            pass: pass,
+            passConfirm: passConfirm
+        };
+        this.http.post(this.backUrl + '/signin', userData)
+            .subscribe(function (res) {
+            var response = JSON.parse(res._body);
+            console.log(response.error);
+            (response.error) ? _this.store.dispatch(AppActions.userError(response.error)) : _this.store.dispatch(AppActions.registerUser(userData));
+        });
+    };
+    BackendService.prototype.userLogin = function (username, pass) {
+        var userData = {
+            username: username,
+            pass: pass
+        };
+        this.http.post(this.backUrl + '/users/login', userData)
+            .subscribe(function (res) { return res.json().then(function (res) {
+            console.log(res);
+        }); });
+    };
     return BackendService;
 }());
 BackendService = __decorate([

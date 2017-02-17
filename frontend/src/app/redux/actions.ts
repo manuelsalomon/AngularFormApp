@@ -9,6 +9,7 @@
  export const POST_DELETE: string = "POST_DELETE";
 
  // users actions:
+ export const USER_ERROR: string = 'USER_ERROR';
  export const USER_REGISTER: string = 'USER_REGISTER';
  export const USER_LOGIN: string = 'USER_LOGIN';
  export const USER_LOGOUT: string = 'USER_LOGOUT';
@@ -72,6 +73,12 @@ export const login: ActionCreator<Action> = (username:string, password:string)=>
 export const logout: ActionCreator<Action> = () => {
   return{
     type: USER_LOGOUT
+  }
+}
+export const userError: ActionCreator<Action> = (errorMessage) => {
+  return{
+    type: USER_ERROR,
+    errorMessage: errorMessage
   }
 }
 // comments actions:
