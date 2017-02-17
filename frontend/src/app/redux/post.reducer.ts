@@ -3,6 +3,7 @@ import * as AppActions from './actions';
 import { Post } from '../models/post.model';
 import { BackendService } from '../backend.service';
 
+
 export interface PostState{
   posts: Post[];
   currentPost: {
@@ -18,15 +19,16 @@ const postInitialState = {
   }
 }
 
-// export const postsReducer: Reducer<PostState> = (state: PostState = postInitialState, action: Action) => {
-//   switch (action.type){
-//     case AppActions.POSTS_GET:
-//      let newPosts = Object.assign({}, state);
-//      let posts = BackendService.getPosts()
-//      .subscribe((res) => {
-//        console.log(res);
-//      })
-//      return posts;
-//
-//   }
-// }
+export const PostReducer: Reducer<PostState> = (state: PostState = postInitialState, action) => {
+  switch (action.type){
+    case AppActions.POSTS_GET:
+     let newPosts = Object.assign({}, state);
+     newPosts.posts = action.posts
+     return newPosts
+    default:
+      return state;
+
+     }
+
+
+  }

@@ -1,17 +1,20 @@
 import { Store, combineReducers, createStore, StoreEnhancer } from 'redux';
 import { OpaqueToken } from '@angular/core';
 
-import { UserState } from './user.reducer';
-import { PostState } from './post.reducer';
-import { CommentState } from './comment.reducer';
+// import { UserState, UserReducer } from './user.reducer';
+import { PostState, PostReducer } from './post.reducer';
+// import { CommentState, CommentReducer } from './comment.reducer';
 
 export interface AppState {
-  user: UserState,
+  // user: UserState,
   posts: PostState,
-  comments: CommentState
+  // comments: CommentState
 }
 
-export const AppStore = new OpaqueToken('app.store');
-
-const devTools: StoreEnhancer<AppState> = window["devToolsExtension"]?
+const devTools: StoreEnhancer<PostState> = window["devToolsExtension"]?
 window["devToolsExtension"]() : f => f;
+
+export let store: Store<PostState> = createStore<PostState>(PostReducer, devTools);
+
+
+export const AppStore = new OpaqueToken('app.store');

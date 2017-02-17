@@ -6,4 +6,5 @@ export interface UserState {
   isLogged: boolean,
   username: string,
   name: string,
+  imgUrl: string;
 }

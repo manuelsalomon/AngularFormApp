@@ -13,6 +13,9 @@ import { UserLogComponent } from './user-log/user-log.component';
 import {Routes, RouterModule} from "@angular/router";
 import { UserSignComponent } from './user-sign/user-sign.component'
 
+import { store } from './redux/store'
+import { AppStore } from './redux/store'
+
 const routes: Routes = [
 {path: "", redirectTo:"home", pathMatch:"full"} ,
 {path:"home", component:PostListComponent},
@@ -41,7 +44,11 @@ const routes: Routes = [
     RouterModule.forRoot(routes)
 
   ],
-  providers: [BackendService,{provide:BackendAdress , useValue:BackendAdress}],
+  providers: [
+    BackendService,
+    {provide:BackendAdress, useValue:BackendAdress},
+    {provide: AppStore, useValue: store}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

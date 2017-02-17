@@ -1,4 +1,5 @@
  import { Action, ActionCreator } from 'redux';
+ import { Post } from '../models/post.model'
 
 // posts actions
  export const POSTS_GET: string = 'POSTS_GET';
@@ -21,9 +22,10 @@
 
  // action creators:
  // posts:
- export const getPosts: ActionCreator<Action> = () =>{
+ export const getPosts: ActionCreator<Action> = (posts: Post[]) =>{
    return{
-     type: POSTS_GET
+     type: POSTS_GET,
+     posts: posts
    }
  }
  export const getPost: ActionCreator<Action> = (postId) => {
