@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { BackendService } from '../backend.service';
 
 @Component({
   selector: 'navbar',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor() { }
+  constructor(@Inject(BackendService) public backend: BackendService) { }
 
   ngOnInit() {
   }
-
+  userLogin(username:string, password:string){
+    this.backend.userLogin(username, password);
+  }
 }
