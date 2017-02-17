@@ -9,5 +9,5 @@
 	</div><!-- /panel-body -->
 	</div><!-- /panel panel-default -->
 	</div><!-- /col-sm-5 -->
-<coment></coment>
+<coment *ngFor="let comment of post.comments"[comment]="comment"></coment>
 </div>
