@@ -9,20 +9,21 @@ import { PostListComponent } from './post-list/post-list.component';
 import { PostComponent } from './post/post.component';
 import { ComentComponent } from './coment/coment.component';
 import { UserComponent } from './user/user.component';
-import { UserLogComponent } from './user-log/user-log.component';
 import {Routes, RouterModule} from "@angular/router";
 import { UserSignComponent } from './user-sign/user-sign.component'
+import { PostformComponent } from './postform/postform.component'
 
 import { store } from './redux/store'
-import { AppStore } from './redux/store'
+import { AppStore } from './redux/store';
 
-const routes: Routes = [
+
+export const routes: Routes = [
 {path: "", redirectTo:"home", pathMatch:"full"} ,
 {path:"home", component:PostListComponent},
-{path:"login", component:UserLogComponent},
 {path:"signin", component:UserSignComponent},
 {path:"profile", component:UserComponent},
 {path:"post/:id", component:PostComponent},
+{path:"newpost", component:PostformComponent}
 ]
 
 
@@ -34,8 +35,8 @@ const routes: Routes = [
     PostComponent,
     ComentComponent,
     UserComponent,
-    UserLogComponent,
-    UserSignComponent
+    UserSignComponent,
+    PostformComponent
   ],
   imports: [
     BrowserModule,

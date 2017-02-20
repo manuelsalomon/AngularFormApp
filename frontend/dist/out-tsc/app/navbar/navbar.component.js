@@ -12,11 +12,33 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 import { Component, Inject } from '@angular/core';
 import { BackendService } from '../backend.service';
+import { AppStore } from '../redux/store';
 var NavbarComponent = (function () {
-    function NavbarComponent(backend) {
+    function NavbarComponent(backend, store) {
         this.backend = backend;
+        this.store = store;
+        this.error = false;
+        this.errorMessage = '';
+        this.isLogged = false;
+        this.username = null;
+        this.name = null;
+        this._id = null;
+        this.readState();
     }
+    NavbarComponent.prototype.readState = function () {
+        var state = this.store.getState();
+        this.isLogged = state['UserReducer'].isLogged;
+        this.error = state['UserReducer'].error;
+        this.errorMessage = state['UserReducer'].errorMessage;
+        this.username = state['UserReducer'].username;
+        this.name = state['UserReducer'].name;
+        this._id = state['UserReducer']._id;
+    };
     NavbarComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.store.subscribe(function () {
+            _this.readState();
+        });
     };
     NavbarComponent.prototype.userLogin = function (username, password) {
         this.backend.userLogin(username, password);
@@ -30,7 +52,8 @@ NavbarComponent = __decorate([
         styleUrls: ['./navbar.component.css']
     }),
     __param(0, Inject(BackendService)),
-    __metadata("design:paramtypes", [BackendService])
+    __param(1, Inject(AppStore)),
+    __metadata("design:paramtypes", [BackendService, Object])
 ], NavbarComponent);
 export { NavbarComponent };
 //# sourceMappingURL=../../../../src/app/navbar/navbar.component.js.map

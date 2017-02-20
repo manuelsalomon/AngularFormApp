@@ -1,0 +1,29 @@
+<div class="main-login main-center">
+                    <form class="form-horizontal" method="post" action="#">
+
+                        <div class="form-group">
+                            <label for="name" class="cols-sm-2 control-label">Titulo</label>
+                            <div class="cols-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                    <input #postTitle type="text" class="form-control" name="title" id="title"  placeholder="Enter your Name"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="username" class="cols-sm-2 control-label">Contenido</label>
+                            <div class="cols-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                                    <textarea #postText type="text" class="form-control" name="postbody" id="postbody"  placeholder="Enter your Username"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group ">
+                            <button type="button" (click)="sendPost(postTitle, postText)" class="btn btn-primary btn-lg btn-block login-button">Postear</button>
+                        </div>
+
+                    </form>
+                </div>

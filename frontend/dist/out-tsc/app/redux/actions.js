@@ -3,6 +3,7 @@ export var POST_GET = 'POST_GET';
 export var POST_NEW = 'POST_NEW';
 export var POST_EDIT = 'POST_EDIT';
 export var POST_DELETE = "POST_DELETE";
+export var USER_VALIDATE = 'USER_VALIDATE';
 export var USER_ERROR = 'USER_ERROR';
 export var USER_REGISTER = 'USER_REGISTER';
 export var USER_LOGIN = 'USER_LOGIN';
@@ -10,6 +11,12 @@ export var USER_LOGOUT = 'USER_LOGOUT';
 export var COMMENT_NEW = 'COMMENT_NEW';
 export var COMMENT_EDIT = 'COMMENT_EDIT';
 export var COMMENT_DELETE = 'COMMENT_DELETE';
+export var userValidate = function (isLogged) {
+    return {
+        type: USER_VALIDATE,
+        isLogged: isLogged
+    };
+};
 export var getPosts = function (posts) {
     return {
         type: POSTS_GET,
@@ -42,19 +49,20 @@ export var newPost = function (title, body, author) {
         author: author
     };
 };
-export var registerUser = function (username, name, password) {
+export var registerUser = function (obj) {
     return {
         type: USER_REGISTER,
-        username: username,
-        name: name,
-        password: password
+        username: obj.username,
+        name: obj.name,
+        _id: obj._id
     };
 };
-export var login = function (username, password) {
+export var userLogin = function (obj) {
     return {
         type: USER_LOGIN,
-        username: username,
-        password: password
+        username: obj.username,
+        name: obj.name,
+        _id: obj._id
     };
 };
 export var logout = function () {
@@ -62,10 +70,11 @@ export var logout = function () {
         type: USER_LOGOUT
     };
 };
-export var userError = function (errorMessage) {
+export var userError = function (error) {
     return {
         type: USER_ERROR,
-        errorMessage: errorMessage
+        error: true,
+        errorMessage: error
     };
 };
 export var newComment = function (body) {

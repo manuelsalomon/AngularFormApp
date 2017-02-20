@@ -9,6 +9,7 @@
  export const POST_DELETE: string = "POST_DELETE";
 
  // users actions:
+ export const USER_VALIDATE: string = 'USER_VALIDATE';
  export const USER_ERROR: string = 'USER_ERROR';
  export const USER_REGISTER: string = 'USER_REGISTER';
  export const USER_LOGIN: string = 'USER_LOGIN';
@@ -22,6 +23,14 @@
  // interfaces:
 
  // action creators:
+export const userValidate: ActionCreator<Action> = (isLogged) => {
+  return{
+    type: USER_VALIDATE,
+    isLogged: isLogged
+  }
+}
+
+
  // posts:
  export const getPosts: ActionCreator<Action> = (posts: Post[]) =>{
    return{
@@ -55,19 +64,20 @@
      author: author
    }
  }
- export const registerUser: ActionCreator<Action> = (username:string, name: string, password:string)=>{
+ export const registerUser: ActionCreator<Action> = (obj:any)=>{
    return{
      type: USER_REGISTER,
-     username: username,
-     name: name,
-     password: password
+     username: obj.username,
+     name: obj.name,
+     _id: obj._id
    }
  }
-export const login: ActionCreator<Action> = (username:string, password:string)=> {
+export const userLogin: ActionCreator<Action> = (obj:any)=> {
   return{
     type: USER_LOGIN,
-    username: username,
-    password: password
+    username: obj.username,
+    name: obj.name,
+    _id: obj._id
   }
 }
 export const logout: ActionCreator<Action> = () => {
@@ -75,10 +85,11 @@ export const logout: ActionCreator<Action> = () => {
     type: USER_LOGOUT
   }
 }
-export const userError: ActionCreator<Action> = (errorMessage) => {
+export const userError: ActionCreator<Action> = (error:string) => {
   return{
     type: USER_ERROR,
-    errorMessage: errorMessage
+    error: true,
+    errorMessage: error
   }
 }
 // comments actions:

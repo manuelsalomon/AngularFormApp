@@ -41,6 +41,8 @@
 							</div>
 						</div>
 
+						<p class='loginError' *ngIf="error">{{errorMessage}}<p>
+
 						<div class="form-group ">
 							<button type="button" class="btn btn-primary btn-lg btn-block login-button"
 							(click)="newUser(name.value, username.value, pass.value, passConfirm.value)">Register</button>
