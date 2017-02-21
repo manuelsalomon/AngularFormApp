@@ -1,4 +1,4 @@
-import { Component, OnInit, Injectable, Inject } from '@angular/core';
+import { Component, OnInit, Injectable, Inject, ChangeDetectorRef } from '@angular/core';
 import { AppStore } from '../redux/store'
 import { Store } from 'redux';
 import { AppState } from '../redux/store';
@@ -11,7 +11,7 @@ import { Post } from '../models/post.model';
 })
 export class PostListComponent implements OnInit {
   currentPosts: Post[];
-  constructor(@Inject(AppStore) public store: Store<AppState>){
+  constructor(@Inject(AppStore) public store: Store<AppState>, private ref: ChangeDetectorRef) {
     this.readState()
   }
   readState(){
@@ -20,10 +20,9 @@ export class PostListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.subscribe( () => {
+    this.store.subscribe(() => {
       this.readState();
+      this.ref.detectChanges();
     })
   }
-
-
 }

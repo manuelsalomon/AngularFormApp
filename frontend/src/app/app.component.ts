@@ -30,5 +30,4 @@ ngOnInit(){
 
     // this.store.dispatch(AppActions.getPosts())
   }
-
 }

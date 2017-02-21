@@ -7,8 +7,14 @@
         text-align: center;
         background-color: #eee;
     }
-    .navbar>.container .navbar-brand-centered, 
+    .navbar>.container .navbar-brand-centered,
     .navbar>.container-fluid .navbar-brand-centered {
         margin-left: -80px;
     }
+}
+.login-buttons li{
+  display: inline-block;
+}
+.btn{
+  margin-top: 7px
 }

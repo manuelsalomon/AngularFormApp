@@ -18,6 +18,7 @@ export class PostformComponent implements OnInit {
 
   }
   sendPost(title, text) {
+    console.log('title', title,'text',text);
     this.backend.newPost(title, text);
 
   }

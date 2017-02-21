@@ -43,7 +43,7 @@ export class BackendService {
     this.http.get(this.backUrl, {withCredentials:true})
       .subscribe((res:any) => {
         const response = JSON.parse(res._body);
-        console.log('response', response);
+        console.log('getposts response',response);
         this.validate.validateUser(response);
         response.content
         .map(item => this.results.push(new Post(item)))})
@@ -61,6 +61,7 @@ export class BackendService {
       const response = JSON.parse(res._body);
       (response.error.error)? this.store.dispatch(AppActions.userError(response.error.message)): this.store.dispatch(AppActions.registerUser(response.content))
     })
+    this.getPosts();
   }
   userLogin(username:string, pass:string){
     let userData = {
@@ -70,34 +71,38 @@ export class BackendService {
     this.http.post(this.backUrl+'/users/login', userData, {withCredentials: true})
     .subscribe( (res:any) => {
       const response = JSON.parse(res._body);
-      console.log(response);
-      (response.error.error)? this.store.dispatch(AppActions.userError(response.error.message)):this.store.dispatch(AppActions.userLogin(response.content))
-    })
+      console.log("PELOTUDO" ,response.error.error);
+      (response.error.error)? this.store.dispatch(AppActions.userError(response.error.message)):this.store.dispatch(AppActions.userLogin(response.content));
+      this.getPosts();
+    });
+    // this.getPosts();
   }
   newPost(title:string, text:string){
+    const state = this.store.getState();
     let post = {
       date: new Date(),
       title: title,
-      text: text,
-      author: {
-        _id: this.store['UserReducer']._id,
-        username: this.store['UserReducer'].username
-      }
+      body: text,
+      author: state['UserReducer'].username
     }
     this.http.post(this.backUrl+'/post', post, {withCredentials: true})
     .subscribe( (res:any) => {
-        this.results.push(new Post(res._body.content.json()));
-        this.store.dispatch(AppActions.getPosts(this.results))
+      const response = JSON.parse(res._body);
+      console.log(response);
+      this.results.push(new Post(response.content));
+      this.store.dispatch(AppActions.getPosts(this.results));
     })
-    this.router.navigate(['/home'])
+    this.router.navigate(['/home']);
+    this.getPosts();
   }
   userLogout(){
     this.http.get(this.backUrl+'/users/logout', {withCredentials: true })
     .subscribe( (res:any) => {
       const response = JSON.parse(res._body);
       this.store.dispatch(AppActions.logout());
-      this.router.navigate(['/home']);
-      // this.router.navigate(['/home']);
+      this.getPosts();
     })
+    // this.router.navigate(['/home']);
+
   }
 }

@@ -43,7 +43,6 @@ export class NavbarComponent implements OnInit {
     this.backend.userLogin(username, password);
   }
   logout(){
-    console.log('en funcion logout');
     this.backend.userLogout();
   }
 }

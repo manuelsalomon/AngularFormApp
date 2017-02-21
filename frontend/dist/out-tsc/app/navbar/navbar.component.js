@@ -44,7 +44,6 @@ var NavbarComponent = (function () {
         this.backend.userLogin(username, password);
     };
     NavbarComponent.prototype.logout = function () {
-        console.log('en funcion logout');
         this.backend.userLogout();
     };
     return NavbarComponent;

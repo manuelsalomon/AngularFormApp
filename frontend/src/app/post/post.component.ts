@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'post',
@@ -8,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PostComponent implements OnInit {
 
-  constructor() { }
+  constructor( private ref: ChangeDetectorRef) { }
 
   ngOnInit() {
+    this.ref.detectChanges();
+  }
+  readState(){
+
   }
 
 }

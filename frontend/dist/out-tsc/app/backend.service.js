@@ -37,7 +37,7 @@ var BackendService = (function () {
         this.http.get(this.backUrl, { withCredentials: true })
             .subscribe(function (res) {
             var response = JSON.parse(res._body);
-            console.log('response', response);
+            console.log('getposts response', response);
             _this.validate.validateUser(response);
             response.content
                 .map(function (item) { return _this.results.push(new Post(item)); });
@@ -57,6 +57,7 @@ var BackendService = (function () {
             var response = JSON.parse(res._body);
             (response.error.error) ? _this.store.dispatch(AppActions.userError(response.error.message)) : _this.store.dispatch(AppActions.registerUser(response.content));
         });
+        this.getPosts();
     };
     BackendService.prototype.userLogin = function (username, pass) {
         var _this = this;
@@ -67,27 +68,29 @@ var BackendService = (function () {
         this.http.post(this.backUrl + '/users/login', userData, { withCredentials: true })
             .subscribe(function (res) {
             var response = JSON.parse(res._body);
-            console.log(response);
+            console.log("PELOTUDO", response.error.error);
             (response.error.error) ? _this.store.dispatch(AppActions.userError(response.error.message)) : _this.store.dispatch(AppActions.userLogin(response.content));
+            _this.getPosts();
         });
     };
     BackendService.prototype.newPost = function (title, text) {
         var _this = this;
+        var state = this.store.getState();
         var post = {
             date: new Date(),
             title: title,
-            text: text,
-            author: {
-                _id: this.store['UserReducer']._id,
-                username: this.store['UserReducer'].username
-            }
+            body: text,
+            author: state['UserReducer'].username
         };
         this.http.post(this.backUrl + '/post', post, { withCredentials: true })
             .subscribe(function (res) {
-            _this.results.push(new Post(res._body.content.json()));
+            var response = JSON.parse(res._body);
+            console.log(response);
+            _this.results.push(new Post(response.content));
             _this.store.dispatch(AppActions.getPosts(_this.results));
         });
         this.router.navigate(['/home']);
+        this.getPosts();
     };
     BackendService.prototype.userLogout = function () {
         var _this = this;
@@ -95,7 +98,7 @@ var BackendService = (function () {
             .subscribe(function (res) {
             var response = JSON.parse(res._body);
             _this.store.dispatch(AppActions.logout());
-            _this.router.navigate(['/home']);
+            _this.getPosts();
         });
     };
     return BackendService;

@@ -16,8 +16,8 @@
 
 		      <ul class="nav navbar-nav navbar-right">
 
-            <div *ngIf="!isLogged">
-  		        <li><a href="#" [routerLink]="['/signin']">Registrarse</a></li>
+            <div class="login-buttons" *ngIf="!isLogged">
+  		        <li><button class="btn" [routerLink]="['/signin']">Registrarse</button></li>
   		        <form id="signin" class="navbar-form navbar-right" role="form">
                           <div class="input-group">
                               <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
@@ -33,10 +33,10 @@
                           <p class="loginError">{{errorMessage}}</p>
                 </form>
               </div>
-              <div *ngIf="isLogged">
-                <li><a href="#" [routerLink]="['/newpost']">Postear</a></li>
-                <li><a href="#" [routerLink]="['/user']">{{username}}</a></li>
-                <li><a  (click)="logout()">Log-out</a></li>
+              <div class="login-buttons" *ngIf="isLogged">
+                <li><button  class="btn" [routerLink]="['/newpost']">Postear</button></li>
+                <li><button  class="btn" [routerLink]="['/user']">{{username}}</button></li>
+                <li><button  class="btn" (click)="logout()">Log-out</button></li>
               </div>
 		      </ul>
 		    </div><!-- /.navbar-collapse -->
