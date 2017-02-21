@@ -43,6 +43,10 @@ var NavbarComponent = (function () {
     NavbarComponent.prototype.userLogin = function (username, password) {
         this.backend.userLogin(username, password);
     };
+    NavbarComponent.prototype.logout = function () {
+        console.log('en funcion logout');
+        this.backend.userLogout();
+    };
     return NavbarComponent;
 }());
 NavbarComponent = __decorate([

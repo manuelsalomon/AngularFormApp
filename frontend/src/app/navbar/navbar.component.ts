@@ -42,4 +42,8 @@ export class NavbarComponent implements OnInit {
   userLogin(username:string, password:string){
     this.backend.userLogin(username, password);
   }
+  logout(){
+    console.log('en funcion logout');
+    this.backend.userLogout();
+  }
 }

@@ -13,16 +13,18 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 import { Injectable, Inject } from '@angular/core';
 import { Http } from '@angular/http';
 import { Router } from '@angular/router';
-import { Post } from './models/post.model';
-import * as AppActions from './redux/actions';
-import { AppStore } from './redux/store';
 import 'rxjs';
+import { AppStore } from './redux/store';
+import * as AppActions from './redux/actions';
+import { Post } from './models/post.model';
+import { ValidateUserService } from './validate-user.service';
 export var BackendAdress = 'http://10.6.6.126:3000';
 var BackendService = (function () {
-    function BackendService(backUrl, http, store, router) {
+    function BackendService(backUrl, http, store, validate, router) {
         this.backUrl = backUrl;
         this.http = http;
         this.store = store;
+        this.validate = validate;
         this.router = router;
         this.results = [];
     }
@@ -32,9 +34,12 @@ var BackendService = (function () {
     BackendService.prototype.getPosts = function () {
         var _this = this;
         this.results = [];
-        this.http.get(this.backUrl)
+        this.http.get(this.backUrl, { withCredentials: true })
             .subscribe(function (res) {
-            res.json().content
+            var response = JSON.parse(res._body);
+            console.log('response', response);
+            _this.validate.validateUser(response);
+            response.content
                 .map(function (item) { return _this.results.push(new Post(item)); });
         });
         this.store.dispatch(AppActions.getPosts(this.results));
@@ -84,13 +89,24 @@ var BackendService = (function () {
         });
         this.router.navigate(['/home']);
     };
+    BackendService.prototype.userLogout = function () {
+        var _this = this;
+        this.http.get(this.backUrl + '/users/logout', { withCredentials: true })
+            .subscribe(function (res) {
+            var response = JSON.parse(res._body);
+            _this.store.dispatch(AppActions.logout());
+            _this.router.navigate(['/home']);
+        });
+    };
     return BackendService;
 }());
 BackendService = __decorate([
     Injectable(),
     __param(0, Inject(BackendAdress)),
     __param(2, Inject(AppStore)),
-    __metadata("design:paramtypes", [String, Http, Object, Router])
+    __param(3, Inject(ValidateUserService)),
+    __metadata("design:paramtypes", [String, Http, Object, ValidateUserService,
+        Router])
 ], BackendService);
 export { BackendService };
 //# sourceMappingURL=../../../src/app/backend.service.js.map

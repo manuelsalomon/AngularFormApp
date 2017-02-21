@@ -23,10 +23,10 @@
  // interfaces:
 
  // action creators:
-export const userValidate: ActionCreator<Action> = (isLogged) => {
+export const userValidate: ActionCreator<Action> = (status) => {
   return{
     type: USER_VALIDATE,
-    isLogged: isLogged
+    status: status
   }
 }
 

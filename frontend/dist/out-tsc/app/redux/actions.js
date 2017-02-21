@@ -11,10 +11,10 @@ export var USER_LOGOUT = 'USER_LOGOUT';
 export var COMMENT_NEW = 'COMMENT_NEW';
 export var COMMENT_EDIT = 'COMMENT_EDIT';
 export var COMMENT_DELETE = 'COMMENT_DELETE';
-export var userValidate = function (isLogged) {
+export var userValidate = function (status) {
     return {
         type: USER_VALIDATE,
-        isLogged: isLogged
+        status: status
     };
 };
 export var getPosts = function (posts) {

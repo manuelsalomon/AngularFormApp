@@ -20,12 +20,12 @@ export class AppComponent {
   }
 ngOnInit(){
     this.backend.getPosts();
-    this.http.get(this.backUrl+'/users/validate', {withCredentials: true})
-    .subscribe( (res:any)=> {
-      console.log(res);
-      this.store.dispatch(AppActions.userValidate(res))
-    }
-    )
+    // this.http.get(this.backUrl+'/users/validate', {withCredentials: true})
+    // .subscribe( (res:any)=> {
+    //   console.log(res);
+    //   this.store.dispatch(AppActions.userValidate(res))
+    // }
+    // )
 
 
     // this.store.dispatch(AppActions.getPosts())

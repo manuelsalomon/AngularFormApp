@@ -27,7 +27,15 @@ export const UserReducer: Reducer<UserState> = (state:UserState = userInitialSta
   switch (action.type){
     case AppActions.USER_VALIDATE:
       let validate = Object.assign({}, state);
-      validate.isLogged = action.isLogged;
+      if(action.status.isLogged){
+        validate.isLogged = action.status.isLogged;
+        validate.username = action.status.username;
+        validate._id = action._id;
+      } else {
+        validate.isLogged = false;
+        validate.username = null;
+        validate._id = null;
+      }
       return validate;
     case AppActions.USER_ERROR:
       let error = Object.assign({}, state);
@@ -42,13 +50,19 @@ export const UserReducer: Reducer<UserState> = (state:UserState = userInitialSta
       register._id = action._id;
       return register;
     case AppActions.USER_LOGIN:
-      console.log('action',action);
       let login = Object.assign({}, state);
       login.isLogged = true;
       login.username = action.username;
       login.name = action.name;
       login._id = action._id;
       return login
+    case AppActions.USER_LOGOUT:
+      let logout = Object.assign({}, state);
+      logout.isLogged = false;
+      logout.username = null;
+      logout.name = null;
+      logout._id = null;
+      return logout;
 
 
     default:

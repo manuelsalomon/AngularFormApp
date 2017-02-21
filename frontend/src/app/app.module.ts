@@ -2,7 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import {BackendService, BackendAdress} from './backend.service'
+import {BackendService, BackendAdress} from './backend.service';
+import { ValidateUserService } from './validate-user.service';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { PostListComponent } from './post-list/post-list.component';
@@ -48,7 +49,8 @@ export const routes: Routes = [
   providers: [
     BackendService,
     {provide:BackendAdress, useValue:BackendAdress},
-    {provide: AppStore, useValue: store}
+    {provide: AppStore, useValue: store},
+    ValidateUserService
   ],
   bootstrap: [AppComponent]
 })
