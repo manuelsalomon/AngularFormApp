@@ -5,7 +5,7 @@ const commentModel = new mongoose.Schema({
 
   body: String,
   author: {type: String, required: true},
-  date: { type: Date, default: Date.now },
+  date: {type: Date, default: Date.now}
   
 })
 

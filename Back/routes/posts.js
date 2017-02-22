@@ -4,98 +4,107 @@ const mongoose = require('mongoose');
 // Modelos importados
 const Post = require('../models/posts');
 const Log = require('../models/login');
+const User = require('../models/users');
+const Comments = require('../models/comment');
+const Response = require('../models/response');
 
 const router = express.Router();
 
 // ACCIONES DEL LISTADO DE POSTS //
 
 // Devuelve todo el listado de posts
-function getAllPosts(req, res, next) {  
-  Post.find({}).then((data) => {
-    req.posts = data;
+function getAllPosts(req, res, next) {
+  Post.find({}).populate('comments')
+  .then((data) => {
+    data.map((post) => {
+      post.isOwner = (req.user == post.author);
+    });
+    req.response.content = data;
     next();
-  }).catch((err) => {
-    return res.send('Catch Error', err);
-  })
+  }).catch((err) => res.send(err))
 }
 
 // Carga un nuevo post
 function newPost(req, res, next) {
   Post.create(req.body).then((post) => {
-    req.posts = post;
+    req.response.content = post;
+    post.isOwner = (req.user == post.author);
+    User.findOne({username: req.user}).then((user) =>{
+      user.posts.push(post._id);
+      User.findOneAndUpdate({_id: user._id}, user).then(() => next())
+    })
     next();
-  }).catch((err) => {
-    return res.send('Catch Error', err);
-  })
+  }).catch((err) => res.send(err))
 }
 
 // Devuelve un post particular
 function getPostById(req, res, next) {
-  Post.findById(mongoose.Types.ObjectId(req.params.id), (post) => {
-    req.posts = post;
+  Post.findById(mongoose.Types.ObjectId(req.params.id)).populate('comments')
+  .then((post) => {
+    post.isOwner = (req.user == post.author);
+    req.response.content = post;
     next();
-  }).catch((err) => {
-    return res.send('Catch Error', err);
-  })
+  }).catch((err) => res.send(err))
 }
 
 // Edita un post en particular
 function editPostbyId(req, res, next) {
   Post.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), req.body).then((post) => {
-    req.posts = post;
+    req.response.content = post;
     next();
-  }).catch((err) => {
-    return res.send('Catch Error', err);
-  })
+  }).catch((err) => res.send(err))
 }
 
 // Borra un post en particular
 function deletePostById(req, res, next) {
-  Post.findOneAndRemove({_id: mongoose.Types.ObjectId(req.params.id)}).then((data) =>{
-    req.posts = data;
+  Post.findOneAndRemove({_id: mongoose.Types.ObjectId(req.params.id)}).then((data) => {
+    req.response.content = data;
     next();
-  }).catch((err) => {
-    return res.send('Catch Error', err);
-  })
+  }).catch((err) => res.send(err))
 }
 // ------------------------------- //
 
 // VALIDACIONES //
 
-// function validateCookie(req, res, next){
-//   Log.findOne({username: req.cookie.split(';')[0]},'token').then((log)=>{
-//     if(log.token !== req.cookie.split(';')[1]) return res.send({error: 'Not logged'})
-//     next();
-//   }).catch((err) => {
-//     return res.send('Catch Error', err);
-//   })
-// }
-
-// function markAsOwner(req, res, next) {
-  
-// }
-// ------------------------------- //
-
-function sendRespond(req, res){
-  res.send(req.posts);
+function validateCookie(req, res, next) {
+  req.response = new Response();
+  if(req.cookies.Bearer) {
+    Log.findOne({token: req.cookies.Bearer}).then((log)=>{
+      req.user = log.username;
+      req.response.status.isLogged = !!log;
+      if (!!log) {
+        req.response.status.username = log.username;
+        req.response.status._id = log.user_id;
+      }
+      next();
+    }).catch((err) => res.send(err))
+  }else{
+    next();
+  }
 }
 
-// RUTAS Y METODOS //
+// ------------------------------- //
+
+function sendResponse(req, res) {
+  res.send(req.response);
+}
+
+// RUTAS //
 
 // Devuelve todos los post
-router.get('/', getAllPosts, sendRespond);
+router.get('/', validateCookie, getAllPosts, sendResponse);
 
 // Guarda un nuevo post segun Id
-router.post('/post', newPost, sendRespond);
+router.post('/post', validateCookie, newPost, sendResponse);
 
 // Devuelve un post segun Id
-router.get('/post/:id', getPostById, sendRespond);
+router.get('/post/:id', validateCookie, getPostById, sendResponse);
 
 // Edita un comentario segun Id
-router.put('/post/:id', editPostbyId, sendRespond);
+router.put('/post/:id', validateCookie, editPostbyId, sendResponse);
 
 // Elimina un elemento segun Id
-router.delete('/post/:id', deletePostById, sendRespond);
+router.delete('/post/:id', validateCookie, deletePostById, sendResponse);
 // ------------------------------- //
 
 module.exports = router;
