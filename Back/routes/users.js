@@ -22,7 +22,7 @@ function shortUser(user) {
 
 function validateLoginInputs(req, res, next) {
   User.findOne({ username: req.body.username }).then((user) => {
-    req.response = new Response(); 
+    req.response = new Response();
     if(!user){
       req.response.error.error = true;
       req.response.error.message = 'User not found';
@@ -46,7 +46,7 @@ function validateLoginInputs(req, res, next) {
 
 function createToken(req, res, next) {
   const header = 'HmacSHA1 USER-PASS';
-  const body = `${response.content.username}${response.content.password}`;
+  const body = `${req.response.content.username}${req.response.content.password}`;
   req.salt = salt();
   req.token = encript(header, req.salt)+'.'+encript(body, req.salt);
   next();
@@ -93,7 +93,6 @@ function logOut(req, res, next) {
 function getUserById(req, res, next) {
   User.findOne({_id: req.params.id}, 'username imgUrl name posts').populate('posts')
   .then((user) => {
-    console.log('user', user)
     if(user){
       req.response.content = user;
     }else {
@@ -121,7 +120,7 @@ function validateLogin(req, res, next) {
 }
 
 function sendResponse(req, res) {
-  console.log('RESPUESTA: ', req.response)
+  // console.log('RESPUESTA: ', req.response)
   res.send(req.response);
 }
 
@@ -133,7 +132,7 @@ router.post('/login', validateLoginInputs, createToken, creatCookie, generateLog
 // Logput and clear the user from Log
 router.get('/logout', logOut, sendResponse);
 
-router.get('/:id', validateLogin, getUserById, sendResponse)
+// router.get('/:id', validateLogin, getUserById, sendResponse)
 
 // ------------------------------- //
 
