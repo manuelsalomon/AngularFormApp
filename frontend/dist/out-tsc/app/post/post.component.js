@@ -7,15 +7,26 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Component, ChangeDetectorRef } from '@angular/core';
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+import { Component, Inject, ChangeDetectorRef } from '@angular/core';
+import { BackendService } from '../backend.service';
 var PostComponent = (function () {
-    function PostComponent(ref) {
+    function PostComponent(ref, backend) {
         this.ref = ref;
+        this.backend = backend;
+        this.clicked = false;
+        this.edit = false;
     }
     PostComponent.prototype.ngOnInit = function () {
         this.ref.detectChanges();
     };
-    PostComponent.prototype.readState = function () {
+    PostComponent.prototype.deletePost = function (postId) {
+        this.backend.deletePost(postId);
+    };
+    PostComponent.prototype.editPost = function (postId, body, title) {
+        this.backend.editPost(postId, body, title);
     };
     return PostComponent;
 }());
@@ -26,7 +37,9 @@ PostComponent = __decorate([
         styleUrls: ['./post.component.css'],
         inputs: ['post']
     }),
-    __metadata("design:paramtypes", [ChangeDetectorRef])
+    __param(1, Inject(BackendService)),
+    __metadata("design:paramtypes", [ChangeDetectorRef,
+        BackendService])
 ], PostComponent);
 export { PostComponent };
 //# sourceMappingURL=../../../../src/app/post/post.component.js.map

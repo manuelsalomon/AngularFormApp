@@ -71,7 +71,6 @@ export class BackendService {
     this.http.post(this.backUrl+'/users/login', userData, {withCredentials: true})
     .subscribe( (res:any) => {
       const response = JSON.parse(res._body);
-      console.log("PELOTUDO" ,response.error.error);
       (response.error.error)? this.store.dispatch(AppActions.userError(response.error.message)):this.store.dispatch(AppActions.userLogin(response.content));
       this.getPosts();
     });
@@ -95,6 +94,25 @@ export class BackendService {
     this.router.navigate(['/home']);
     this.getPosts();
   }
+  deletePost(postId:string){
+    this.http.delete(this.backUrl+'/post/'+postId, {withCredentials: true})
+    .subscribe( (res:any) => {
+      this.router.navigate(['/home']);
+      this.getPosts();
+    });
+  }
+  editPost(postId:string, body:string, title:string){
+    const postEdit = {
+      body: body,
+      title: title
+    }
+    this.http.put(this.backUrl+'/post/'+postId, postEdit, {withCredentials: true})
+    .subscribe( (res:any) => {
+      this.router.navigate(['/home']);
+      this.getPosts();
+    })
+  }
+
   userLogout(){
     this.http.get(this.backUrl+'/users/logout', {withCredentials: true })
     .subscribe( (res:any) => {
@@ -103,6 +121,17 @@ export class BackendService {
       this.getPosts();
     })
     // this.router.navigate(['/home']);
+  }
+  newComment(body, postId){
+    const newComment = {
+      body: body,
+      postId: postId
+    }
+    this.http.post(this.backUrl+'/comments', newComment, {withCredentials: true})
+    .subscribe( (res:any) => {
+      console.log(res);
+      this.getPosts();
+    })
 
   }
 }

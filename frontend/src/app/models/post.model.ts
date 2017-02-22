@@ -10,7 +10,7 @@ export class Post{
   date: Date;
   isOwner: boolean;
   constructor(obj){
-    this.postId = obj.postId;
+    this.postId = obj._id;
     this.author = obj.author;
     this.title = obj.title;
     this.body = obj.body;

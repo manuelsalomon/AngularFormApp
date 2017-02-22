@@ -35,7 +35,7 @@
               </div>
               <div class="login-buttons" *ngIf="isLogged">
                 <li><button  class="btn" [routerLink]="['/newpost']">Postear</button></li>
-                <li><button  class="btn" [routerLink]="['/user']">{{username}}</button></li>
+                <li><button  class="btn" [routerLink]="['/user/']">{{username}}</button></li>
                 <li><button  class="btn" (click)="logout()">Log-out</button></li>
               </div>
 		      </ul>

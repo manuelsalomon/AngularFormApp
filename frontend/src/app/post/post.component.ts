@@ -1,4 +1,6 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
+import { BackendService } from '../backend.service';
+
 
 @Component({
   selector: 'post',
@@ -7,14 +9,21 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
   inputs: ['post']
 })
 export class PostComponent implements OnInit {
-
-  constructor( private ref: ChangeDetectorRef) { }
-
+  clicked: boolean;
+  edit: boolean;
+  constructor( private ref: ChangeDetectorRef,
+              @Inject(BackendService) public backend: BackendService) {
+  this.clicked = false;
+  this.edit = false;
+}
   ngOnInit() {
     this.ref.detectChanges();
   }
-  readState(){
-
+  deletePost(postId:string){
+    this.backend.deletePost(postId);
+  }
+  editPost(postId:string, body:string, title:string){
+    this.backend.editPost(postId, body, title);
   }
 
 }

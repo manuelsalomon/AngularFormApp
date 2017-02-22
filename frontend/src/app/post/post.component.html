@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="col-sm-12">
-	<div class="panel panel-default">
+	<div *ngIf="!edit" class="panel panel-default">
 	<div class="panel-heading">
 	<h3><strong>{{post.author}}</strong> <span class="text-muted">{{post.title}}</span></h3>
 	</div>
@@ -8,12 +8,26 @@
 	{{post.body}}
 	</div><!-- /panel-body -->
 	<div class="panel-heading">
-		<a class="btn icon-btn btn-success"><span class="glyphicon btn-glyphicon glyphicon-plus img-circle text-success"></span>Commentar</a>
+		<a (click)="clicked=!clicked" class="btn icon-btn btn-success"><span class="glyphicon btn-glyphicon glyphicon-plus img-circle text-success"></span>Comentar</a>
 		<span *ngIf="post.isOwner">
-			<a class="btn icon-btn btn-warning"><span class="glyphicon btn-glyphicon glyphicon-minus img-circle text-warning"></span>Editar</a>
-			<a class="btn icon-btn btn-danger" ><span class="glyphicon btn-glyphicon glyphicon-trash img-circle text-danger"></span>Eliminar</a>
+			<a class="btn icon-btn btn-warning" (click)='edit=!edit'><span class="glyphicon btn-glyphicon glyphicon-minus img-circle text-warning"></span>Editar</a>
+			<a class="btn icon-btn btn-danger"(click)="deletePost(post.postId)" ><span class="glyphicon btn-glyphicon glyphicon-trash img-circle text-danger"></span>Eliminar</a>
 		</span>
 	</div><!-- /panel panel-default -->
 	</div><!-- /col-sm-5 -->
-<coment *ngFor="let comment of post.comments"[comment]="comment"></coment>
+
+	<div *ngIf="edit" class="panel panel-default">
+	<div class="panel-heading">
+	<h3><strong>{{post.author}}</strong> <input #editTitle class="form-control" type="text" placeholder="{{post.title}}" class="text-muted"/></h3>
+	</div>
+	<textarea #editBody class="panel-body">
+		{{post.body}}
+	</textarea><!-- /panel-body -->
+	<div class="panel-heading">
+		<a (click)="editPost(post.postId, editBody.value, editTitle.value)" class="btn icon-btn btn-success"><span class="glyphicon btn-glyphicon glyphicon-plus img-circle text-success"></span>Editar</a>
+	</div><!-- /panel panel-default -->
+	</div><!-- /col-sm-5 -->
+
+<coment *ngFor="let comment of post.comments" [comment]="comment"></coment>
+<new-comment *ngIf="clicked" [post1]="post"></new-comment>
 </div>

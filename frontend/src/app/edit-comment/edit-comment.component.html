@@ -1,0 +1,19 @@
+<div>
+	<div class="col-sm-1">
+	<div class="thumbnail">
+	<img class="img-responsive user-photo" width="50px" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+	</div><!-- /thumbnail -->
+	</div><!-- /col-sm-1 -->
+
+	<div class="col-sm-5">
+	<div class="panel panel-default">
+	<div class="panel-heading">
+	<strong>Commenting as:</strong> <span class="text-muted">{{ username || 'Guest'}}</span>
+	</div>
+	<div class="panel-body">
+	<textarea class="form-control" placeholder="Commentario..." #commentBody ></textarea>
+	</div><!-- /panel-body -->
+  <button class="btn" (click)="newComment(commentBody.value, post1.postId)">OK</button>
+	</div><!-- /panel panel-default -->
+	</div><!-- /col-sm-5 -->
+</div>

@@ -16,6 +16,8 @@ import { PostformComponent } from './postform/postform.component'
 
 import { store } from './redux/store'
 import { AppStore } from './redux/store';
+import { NewCommentComponent } from './new-comment/new-comment.component';
+import { EditCommentComponent } from './edit-comment/edit-comment.component';
 
 
 export const routes: Routes = [
@@ -37,7 +39,9 @@ export const routes: Routes = [
     ComentComponent,
     UserComponent,
     UserSignComponent,
-    PostformComponent
+    PostformComponent,
+    NewCommentComponent,
+    EditCommentComponent
   ],
   imports: [
     BrowserModule,

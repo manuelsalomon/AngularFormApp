@@ -17,6 +17,7 @@ export class PostListComponent implements OnInit {
   readState(){
     const state: AppState = this.store.getState();
     this.currentPosts = state['PostReducer'].posts;
+    console.log('current posts', this.currentPosts)
   }
 
   ngOnInit() {

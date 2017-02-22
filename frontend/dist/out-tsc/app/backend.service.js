@@ -68,7 +68,6 @@ var BackendService = (function () {
         this.http.post(this.backUrl + '/users/login', userData, { withCredentials: true })
             .subscribe(function (res) {
             var response = JSON.parse(res._body);
-            console.log("PELOTUDO", response.error.error);
             (response.error.error) ? _this.store.dispatch(AppActions.userError(response.error.message)) : _this.store.dispatch(AppActions.userLogin(response.content));
             _this.getPosts();
         });
@@ -92,12 +91,44 @@ var BackendService = (function () {
         this.router.navigate(['/home']);
         this.getPosts();
     };
+    BackendService.prototype.deletePost = function (postId) {
+        var _this = this;
+        this.http.delete(this.backUrl + '/post/' + postId, { withCredentials: true })
+            .subscribe(function (res) {
+            _this.router.navigate(['/home']);
+            _this.getPosts();
+        });
+    };
+    BackendService.prototype.editPost = function (postId, body, title) {
+        var _this = this;
+        var postEdit = {
+            body: body,
+            title: title
+        };
+        this.http.put(this.backUrl + '/post/' + postId, postEdit, { withCredentials: true })
+            .subscribe(function (res) {
+            _this.router.navigate(['/home']);
+            _this.getPosts();
+        });
+    };
     BackendService.prototype.userLogout = function () {
         var _this = this;
         this.http.get(this.backUrl + '/users/logout', { withCredentials: true })
             .subscribe(function (res) {
             var response = JSON.parse(res._body);
             _this.store.dispatch(AppActions.logout());
+            _this.getPosts();
+        });
+    };
+    BackendService.prototype.newComment = function (body, postId) {
+        var _this = this;
+        var newComment = {
+            body: body,
+            postId: postId
+        };
+        this.http.post(this.backUrl + '/comments', newComment, { withCredentials: true })
+            .subscribe(function (res) {
+            console.log(res);
             _this.getPosts();
         });
     };
