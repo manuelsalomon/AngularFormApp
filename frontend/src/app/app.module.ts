@@ -48,7 +48,6 @@ export const routes: Routes = [
     FormsModule,
     HttpModule,
     RouterModule.forRoot(routes)
-
   ],
   providers: [
     BackendService,
